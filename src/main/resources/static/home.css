@@ -1,0 +1,12 @@
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1em;
+    justify-content: center;
+}
+.wrap {
+    text-align: center;
+}
+.hometitle {
+    border: #dc3545;
+}

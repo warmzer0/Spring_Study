@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link  href="../static/home.css"
+         rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+  <div class="wrap">
+    <hometitle>sqi soft</hometitle>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class="addprofile" type="button"
+              th:onclick="|location.href='@{/members/add}'|">
+        회원 가입
+      </button>
+    </div>
+
+    <div class="col">
+      <button class="login"
+              onclick="location.href='items.html'"
+              th:onclick="|location.href='@{/login}'|" type="button">
+        로그인
+      </button>
+
+      <div class="col">
+        <button class="findprofile"
+                onclick="location.href='items.html'"
+                th:onclick="|location.href='@{/members/find}'|" type="button">
+          회원 아이디 찾기</button>
+    </div>
+
+  </div>
+  </div>
+</div>
+</body>
+</html>
