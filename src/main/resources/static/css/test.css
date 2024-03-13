@@ -1,0 +1,91 @@
+.stars-outer {
+    display: inline-block;
+    position: relative;
+    font-family: FontAwesome;
+}
+
+.stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+}
+
+.stars-outer::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-size: 18px;
+    color: #ccc; /* 별 모양의 기본 색상 */
+}
+
+.stars-inner::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    font-size: 18px;
+    color: #f8ce0b; /* 별점에 따른 채워진 별의 색상 */
+}
+.review-rating {
+    font-size: 20px; /* 별점의 크기 조정 */
+    color: #ffc107; /* 별점의 색상 설정, 금색으로 표현 */
+    margin-right: 10px; /* 오른쪽 여백 추가 */
+}
+
+.back-button {
+    display: block;
+    margin-bottom: 20px;
+}
+.rating, #ratingValue, #reviewText {
+    text-align: center; /* 중앙 정렬 */
+}
+#reviewText {
+    width: 100%; /* 너비 조정 */
+    height: 180px; /* 높이 조정 */
+    border: 1px solid #ccc; /* 테두리 스타일 */
+    margin-top: 20px; /* 상단 여백 */
+    padding: 10px; /* 내부 여백 */
+    box-sizing: border-box; /* 박스 크기 계산 방식 */
+    font-size: 14px; /* 글꼴 크기 */
+    color: #999; /* 글꼴 색상 */
+}
+.review-form {
+    max-width: 600px;
+    margin: auto;
+}
+
+.star {
+    cursor: pointer;
+    color: grey;
+}
+
+.star:hover,
+.star:hover ~ .star {
+    color: gold;
+}
+
+#ratingValue {
+    font-size: 20px;
+    color: #333;
+}
+
+#reviewText {
+    resize: none; /* 사용자가 크기 조정 불가능하게 설정 */
+}
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+.back-button1 {
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.img-fluid {
+    max-width: 80%; /* 이미지의 최대 너비를 50%로 설정 */
+    height: 80%; /* 이미지의 높이를 자동으로 조정 */
+}
+
+.star {
+    color: gold;
+}
+

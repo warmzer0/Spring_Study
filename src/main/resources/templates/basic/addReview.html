@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 작성하기</title>
+    <link rel="stylesheet" th:href="@{/css/test.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <form id="reviewForm" th:method="post" class="review-form">
+        <a id=".back-button" class="back-button btn btn-light">← 돌아가기</a>
+        <input type="hidden" id="restaurantId" name="restaurantId" th:value="${restaurantId}"/>
+        <input type="hidden" id="memberId" name="memberId" th:value="${memberId}"/>
+        <div class="text-center my-4">
+            <div class="rating">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+                <input type="hidden" name="rating" id="rating">
+            </div>
+            <p id="ratingValue">0/5</p>
+        </div>
+
+        <div class="form-group">
+            <label for="reviewText">리뷰를 작성해주세요</label>
+            <textarea id="reviewText" name="reviewText" class="form-control" placeholder="최대 200자 (띄어쓰기 포함)" maxlength="200"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">리뷰 작성 완료</button>
+    </form>
+</div>
+<!-- 여기에 JavaScript 코드 삽입 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initStarRating();
+        handleFormSubmission();
+    });
+
+    function initStarRating() {
+        // 별점 UI에 대한 참조를 가져옵니다.
+        const stars = document.querySelectorAll('.star');
+        const ratingValueDisplay = document.getElementById('ratingValue');
+        const ratingInput = document.getElementById('rating');
+
+        // 각 별에 클릭 이벤트 리스너를 추가합니다.
+        stars.forEach(star => {
+            star.addEventListener('click', function (e) {
+                const selectedValue = e.currentTarget.getAttribute('data-value');
+                // 선택된 별점을 숨겨진 입력 필드에 설정하고, UI를 업데이트합니다.
+                ratingInput.value = selectedValue;
+                ratingValueDisplay.textContent = `${selectedValue}/5`;
+                updateStarColors(stars, selectedValue);
+            });
+        });
+    }
+
+    function updateStarColors(stars, selectedValue) {
+        // 별의 색상을 업데이트하여 사용자가 선택한 별점을 시각적으로 나타냅니다.
+        stars.forEach(star => {
+            star.style.color = star.getAttribute('data-value') <= selectedValue ? 'gold' : 'grey';
+        });
+    }
+
+    function handleFormSubmission() {
+        const form = document.getElementById('reviewForm');
+
+        const restaurantId = document.getElementById('restaurantId').value;
+
+        // 오류 메시지를 표시할 요소 추가
+        const errorMessage = document.createElement('p');
+        errorMessage.setAttribute('id', 'error-message');
+        form.appendChild(errorMessage);
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // 폼의 기본 제출 동작을 방지합니다.
+
+            // 폼에서 별점과 리뷰 텍스트를 가져옵니다.
+            const rating = document.getElementById('rating').value;
+            const reviewText = document.getElementById('reviewText').value;
+
+
+            const action = `/basic/restaurants/${restaurantId}/reviews`; // action URL 동적 생성
+
+            // 데이터 객체에 memberId 추가
+            const data = { rating, reviewText }; // 데이터 객체 생성
+
+            //const data = { rating: 5, reviewText: "Static test" }; // 테스트를 위한 정적 값
+
+            console.log(data); // 데이터 로그 출력
+
+            // 별점 입력 여부를 검증합니다.
+            if (!rating) {
+                alert('별점을 선택해주세요.');
+                return; // 별점이 선택되지 않았으면 함수 실행을 중단합니다.
+            }
+
+            if (reviewText === "") {
+                // 리뷰 텍스트가 비어있는 경우, 사용자에게 경고
+                alert('리뷰 내용을 입력해주세요.');
+                return; // 함수 실행 중단
+            }
+
+            submitReview(action, data, restaurantId); // 수정된 매개변수로 함수 호출
+        });
+    }
+
+    function submitReview(action, data, restaurantId) {
+
+        if (!action || !data) {
+            console.error('submitReview 함수에 필요한 매개변수가 제공되지 않았습니다.');
+            return;
+        }
+
+        fetch(action, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('서버에서 응답이 없습니다: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(() => {
+                // 성공적인 응답 처리, 리뷰가 성공적으로 추가된 식당의 상세 페이지로 리디렉션
+                window.location.href = `/basic/restaurants/${restaurantId}`;
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('리뷰 제출에 실패했습니다. 다시 시도해주세요.');
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const backButton = document.querySelector('.back-button');
+        const restaurantId = document.getElementById('restaurantId').value; // Assuming this value is populated correctly
+
+        backButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default action
+            window.location.href = `/basic/restaurants/${restaurantId}`; // Navigate to the detail page
+        });
+    });
+
+</script>
+
+</body>
+</html>
+
+
+

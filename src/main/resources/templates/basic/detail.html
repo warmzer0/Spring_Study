@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>가게 상세 정보</title>
+
+    <style>
+        .container {
+            justify-content: center;
+        }
+
+        .back-button {
+            justify-content: left;
+            font-size: 30px;
+        }
+
+        .storephoto {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .img-fluid {
+            width: 350px;
+            height: 350px;
+        }
+
+        .copy-address {
+            height: 50px;
+            width: 400px;
+            border: none;
+            font-size: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .add-review {
+            height: 50px;
+            width: 400px;
+            border: none;
+            font-size: 20px;
+            border-radius: 10px;
+            margin: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 25px;
+        }
+
+        .storename {
+            margin: 10px;
+        }
+
+        .star-average {
+            margin: 10px;
+        }
+
+        .location {
+            margin: 10px;
+        }
+
+        .review-box {
+            margin: 10px;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div>
+        <a id="back-button" class="back-button">← 돌아가기</a>
+    </div>
+
+    <div class="row">
+        <div id= "storephoto" class="storephoto">
+            <img th:src="${restaurant.photoUrl}" alt="음식 사진" class="img-fluid"/>
+        </div>
+    </div>
+
+    <h1 th:text="${restaurant.restaurantName}" class="storename">가게명</h1>
+
+    <div class="clearfix"></div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <p class="star-average">평균 별점:
+        <span id="averageRatingStars"></span>
+        <span th:text="${averageRating}">4.7</span>/5
+    </p>
+
+    <div class="location">
+        <p th:text="${restaurant.location}" class="mb-0">위치</p>
+        <button onclick="copyToClipboard()" class="copy-address">주소 복사</button>
+    </div>
+
+    <a th:href="@{/basic/restaurants/{restaurantId}/addReview(restaurantId=${restaurant.restaurantId})}"
+       class="add-review">리뷰 추가하기</a>
+
+    <div class="review-box">
+        <h2>리뷰</h2>
+        <div class="row">
+            <div th:each="review : ${reviews}" class="col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-start">
+                        <div>
+                            <span th:text="${review.member.loginId}"></span> <!-- 여기에 회원 아이디 표시 -->
+                            <span class="review-rating" th:text="${review.rating} + '★'">별점</span>
+                        </div>
+                        <div class="stars-outer">
+                            <div class="stars-inner"></div>
+                        </div>
+                        <button id="deleteButton" class="report-btn btn btn-sm">신고하기</button>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text" th:text="${review.reviewText}">리뷰 내용이 여기에 표시됩니다.</p>
+                        <button class="btn btn-danger btn-sm" th:onclick="'confirmDelete(' + ${review.reviewId} + ',' + ${restaurant.restaurantId} + ');'">삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard() {
+        let textArea = document.createElement("textarea");
+        textArea.value = document.querySelector('.d-flex p').textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        alert("주소가 복사되었습니다.");
+    }
+</script>
+
+
+<script>
+    function confirmDelete(restaurantId,reviewId) {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            fetch(`/basic/restaurants/${restaurantId}/reviews/${reviewId}/delete`, {
+                method: 'POST', // 또는 서버 측 구현에 따라 'DELETE'를 사용할 수도 있습니다.
+                // 세션 기반 인증을 사용하는 경우, 여기에 추가적인 인증 헤더는 필요 없습니다.
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('리뷰가 성공적으로 삭제되었습니다.');
+                        window.location.reload(); // 페이지 새로고침
+                    } else {
+                        alert('리뷰 삭제에 실패했습니다. 다시 시도해주세요.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const backButton = document.querySelector('.back-button'); // Corrected class name
+
+        backButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default action
+            window.location.href = "/basic/restaurants"; // Correct URL
+        });
+    });
+
+
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+</body>
+</html>

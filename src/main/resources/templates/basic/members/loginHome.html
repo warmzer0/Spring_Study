@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet">
+
+    <style>
+        .container {
+            justify-content: center;
+        }
+
+        .hometitle {
+            text-align: center;
+            justify-content: center;
+            margin-bottom: 70px;
+            margin-top: 70px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .membername {
+            text-align: center;
+            justify-content: center;
+            margin-bottom: 70px;
+            margin-top: 70px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .withdrawal {
+            height: 50px;
+            width: 700px;
+            border: none;
+            margin: 20px;
+            font-size: 20px;
+            border-radius: 10px;
+        }
+
+        .logout {
+            height: 50px;
+            width: 700px;
+            border: none;
+            margin: 20px;
+            font-size: 20px;
+            border-radius: 10px;
+        }
+
+        .gohome {
+            height: 50px;
+            width: 700px;
+            border: none;
+            margin: 20px;
+            font-size: 20px;
+            border-radius: 10px;
+        }
+
+        .row {
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hometitle">
+        <h2>홈 화면</h2>
+    </div>
+
+    <h4 class="membername" th:text="|회원: ${member.name}|">로그인 사용자 이름</h4>
+
+    <div class="row">
+        <div class="col">
+            <button class="gohome" type="button"
+                    th:onclick="|location.href='@{/basic/restaurants}'|">
+                홈화면 바로가기
+            </button>
+        </div>
+
+        <div class="col">
+            <form th:action="@{/logout}" method="post">
+                <button class="logout" type="submit">
+                    로그아웃
+                </button>
+            </form>
+
+            <form action="/withdraw" method="post">
+                <button class="withdrawal" type="submit">회원 탈퇴</button>
+            </form>
+
+        </div>
+    </div>
+</div> <!-- /container -->
+</body>
+</html>

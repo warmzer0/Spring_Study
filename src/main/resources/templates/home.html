@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link  href="../static/home.css"
+         rel="stylesheet">
+
+  <style>
+    .container {
+      justify-content: center;
+    }
+
+    .title {
+      text-align: center;
+      justify-content: center;
+      color: #0056b3;
+      margin-bottom: 70px;
+      margin-top: 70px;
+      font-size: 30px;
+    }
+
+    .ButtonBox {
+      text-align: center;
+    }
+
+
+    .addprofile {
+      height: 70px;
+      width: 700px;
+      border: none;
+      font-size: 20px;
+      margin: 20px;
+      border-radius: 10px;
+    }
+
+    .login {
+      height: 70px;
+      width: 700px;
+      border: none;
+      margin: 20px;
+      font-size: 20px;
+      border-radius: 10px;
+    }
+
+    .findprofile {
+      height: 70px;
+      width: 700px;
+      border: none;
+      margin: 20px;
+      font-size: 20px;
+      border-radius: 10px;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <div class="title">
+    <h3>점심 추천 게시판</h3>
+  </div>
+
+  <div class="ButtonBox">
+    <div class="col">
+      <button class="addprofile" type="button"
+              th:onclick="|location.href='@{/members/add}'|">
+        회원 가입
+      </button>
+    </div>
+
+    <div class="col">
+      <button class="login"
+              onclick="location.href='items.html'"
+              th:onclick="|location.href='@{/login}'|" type="button">
+        로그인
+      </button>
+
+      <div class="col">
+        <button class="findprofile"
+                onclick="location.href='items.html'"
+                th:onclick="|location.href='@{/members/find}'|" type="button">
+          회원 아이디 찾기
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

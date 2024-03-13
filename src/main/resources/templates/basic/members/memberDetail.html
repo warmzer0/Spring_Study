@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link
+            rel="stylesheet">
+
+    <style>
+        .container {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .main {
+            justify-content: center;
+            margin: 100px;
+        }
+
+        .managestuff {
+            height: 50px;
+            width: 700px;
+            border: none;
+            font-size: 20px;
+            border-radius: 10px;
+            margin: 5px;
+        }
+
+        .logout {
+            height: 50px;
+            width: 700px;
+            border: none;
+            font-size: 20px;
+            border-radius: 10px;
+            margin: 5px;
+        }
+
+        .withdrawal {
+            height: 50px;
+            width: 700px;
+            border: none;
+            font-size: 20px;
+            border-radius: 10px;
+            margin: 5px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+
+    <div class="main">
+        <h2>환영합니다 :)</h2>
+    </div>
+
+    <!-- 회원 탈퇴 버튼 -->
+    <form action="/withdraw" method="post">
+        <button class="managestuff" type="button"
+                th:onclick="|location.href='@{/items}'|">
+            게시판 가기
+        </button>
+    </form>
+
+    <h4 class="mb-3" th:text="|로그인: ${member.name}|">로그인 사용자 이름</h4>
+
+    <div class="col">
+        <button class="withdrawal" type="submit">회원 탈퇴</button>
+    </div>
+
+    <div class="col">
+
+        <form th:action="@{/logout}" method="post">
+            <button class="logout" type="submit">
+                로그아웃
+            </button>
+        </form>
+    </div>
+</div>
+</div> <!-- /container -->
+</body>
+</html>
